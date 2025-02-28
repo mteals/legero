@@ -1,7 +1,7 @@
-import { create } from "zustand";
-import { Filter, OrderItem } from "@/types";
-import dayjs from "dayjs";
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { create } from "zustand"
+import { Filter, OrderItem } from "@/types"
+import dayjs from "dayjs"
+import { persist, createJSONStorage } from "zustand/middleware"
 
 interface OrderState {
   lastIDNum: number
@@ -32,7 +32,7 @@ export const useOrderStore = create<OrderState>()(
 
         set((state) => {
           const updatedAt = state.updatedAt ? dayjs(state.updatedAt) : null
-          const isSameDay = updatedAt ? updatedAt?.isSame(now, 'date') : false
+          const isSameDay = updatedAt ? updatedAt?.isSame(now, "date") : false
 
           const shouldReset = !state.updatedAt || !isSameDay
           const baseNum = shouldReset ? 0 : state.lastIDNum
@@ -41,56 +41,62 @@ export const useOrderStore = create<OrderState>()(
           return { lastIDNum: idNum }
         })
 
-        let idNumStr = idNum!.toString().padStart(4, '0')
+        let idNumStr = idNum!.toString().padStart(4, "0")
         const id = `${now.format("YYYYMMDD")}${idNumStr}`
         return id
       },
       orders: [],
-      filter: 'all',
-      addOrder: (item) => set((state) => ({
-        orders: [...state.orders, item],
-        updatedAt: dayjs().toISOString()
-      })),
-      removeOrder: (id) => set((state) => ({
-        orders: state.orders.filter((item) => item.id !== id),
-        updatedAt: dayjs().toISOString()
-      })),
-      updateOrder: (id: string, newItem: OrderItem) => set((state) => {
-        const now = dayjs()
+      filter: "all",
+      addOrder: (item) =>
+        set((state) => ({
+          orders: [...state.orders, item],
+          updatedAt: dayjs().toISOString(),
+        })),
+      removeOrder: (id) =>
+        set((state) => ({
+          orders: state.orders.filter((item) => item.id !== id),
+          updatedAt: dayjs().toISOString(),
+        })),
+      updateOrder: (id: string, newItem: OrderItem) =>
+        set((state) => {
+          const now = dayjs()
 
-        const updatedOrders = state.orders.map((item) => {
-          if (item.id === id) {
-            return {
-              ...item,
-              ...newItem,
-              id: item.id
+          const updatedOrders = state.orders.map((item) => {
+            if (item.id === id) {
+              return {
+                ...item,
+                ...newItem,
+                id: item.id,
+              }
             }
-          }
-          return item
-        })
+            return item
+          })
 
-        return {
-          orders: updatedOrders,
-          updatedAt: now.toISOString()
-        }
-      }),
-      clearOrders: () => set({
-        orders: [],
-        updatedAt: dayjs().toISOString()
-      }),
+          return {
+            orders: updatedOrders,
+            updatedAt: now.toISOString(),
+          }
+        }),
+      clearOrders: () =>
+        set({
+          orders: [],
+          updatedAt: dayjs().toISOString(),
+        }),
       setFilter: (filter) => set({ filter }),
-      updateTargetID: '',
+      updateTargetID: "",
       setUpdateTargetID: (id) => set({ updateTargetID: id }),
       findOrder: (id: string): OrderItem => {
-        const order = useOrderStore.getState().orders.find((item) => item.id === id)
+        const order = useOrderStore
+          .getState()
+          .orders.find((item) => item.id === id)
         if (!order) {
-          throw new Error('Order not found')
+          throw new Error("Order not found")
         }
         return order
-      }
+      },
     }),
     {
-      name: 'order-store',
+      name: "order-store",
       storage: createJSONStorage(() => localStorage),
     }
   )
