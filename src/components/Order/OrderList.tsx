@@ -1,20 +1,24 @@
-import React from "react";
-import OrderItem from "./OrderItem";
-import { OrderItem as OI } from "@/types";
-import { useOrderStore } from "@/store/order";
+import React from "react"
+import OrderItem from "./OrderItem"
+import { OrderItem as OI } from "@/types"
+import { useOrderStore } from "@/store/order"
 
 const OrderList: React.FC = () => {
   let filteredOrders: OI[] = []
-  const filter = useOrderStore(state => state.filter)
+  const filter = useOrderStore((state) => state.filter)
   switch (filter) {
-    case 'all':
-      filteredOrders = useOrderStore(state => state.orders)
+    case "all":
+      filteredOrders = useOrderStore((state) => state.orders)
       break
-    case 'uncompleted':
-      filteredOrders = useOrderStore(state => state.orders).filter((order: OI) => !order.completedAt)
+    case "uncompleted":
+      filteredOrders = useOrderStore((state) => state.orders).filter(
+        (order: OI) => !order.completedAt
+      )
       break
-    case 'completed':
-      filteredOrders = useOrderStore(state => state.orders).filter((order: OI) => !!order.completedAt)
+    case "completed":
+      filteredOrders = useOrderStore((state) => state.orders).filter(
+        (order: OI) => !!order.completedAt
+      )
   }
 
   return (

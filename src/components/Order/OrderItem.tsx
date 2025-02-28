@@ -1,40 +1,46 @@
-import { needsMeatStep, needsNoodlesStep, NoodleType, OrderItem as OI, StepStatus } from "@/types";
-import React from "react";
-import { CarbonEdit, CarbonTrashCan } from "@/components/Icon";
-import { getMeatsRequest, getOtherRequest, getSizePrice } from "@/logic/order";
-import { useOrderStore } from "@/store/order";
-import dayjs from "dayjs";
+import {
+  needsMeatStep,
+  needsNoodlesStep,
+  NoodleType,
+  OrderItem as OI,
+  StepStatus,
+} from "@/types"
+import React from "react"
+import { CarbonEdit, CarbonTrashCan } from "@/components/Icon"
+import { getMeatsRequest, getOtherRequest, getSizePrice } from "@/logic/order"
+import { useOrderStore } from "@/store/order"
+import dayjs from "dayjs"
 
 const getNoodleTypeClass = (noodleType: NoodleType | undefined): string => {
   let noodleColor = ""
 
   switch (noodleType) {
-    case '河粉':
-      noodleColor = 'bg-blue-500'
-      break;
-    case '米粉':
-      noodleColor = 'bg-green-500'
-      break;
-    case '伊面':
-      noodleColor = 'bg-yellow-500'
-      break;
+    case "河粉":
+      noodleColor = "bg-blue-500"
+      break
+    case "米粉":
+      noodleColor = "bg-green-500"
+      break
+    case "伊面":
+      noodleColor = "bg-yellow-500"
+      break
     default:
-      noodleColor = 'bg-gray-500'  // TODO
+      noodleColor = "bg-gray-500" // TODO
   }
 
   return `text-2xl mr-4 ${noodleColor}`
 }
 
 const getStepBtnClass = (stepStatus: StepStatus): string => {
-  let btnState = 'btn-outline'
+  let btnState = "btn-outline"
   switch (stepStatus) {
-    case 'not-started':
+    case "not-started":
       break
-    case 'in-progress':
-      btnState = 'btn-info'
+    case "in-progress":
+      btnState = "btn-info"
       break
-    case 'completed':
-      btnState = 'btn-success'
+    case "completed":
+      btnState = "btn-success"
       break
     default:
     // do nothing
@@ -43,17 +49,17 @@ const getStepBtnClass = (stepStatus: StepStatus): string => {
 }
 
 const getServeMealBtnClass = (createdAt: string): string => {
-  let base = 'btn text-xl'
+  let base = "btn text-xl"
   if (!createdAt) {
-    return base + ' ' + 'btn-outline'
+    return base + " " + "btn-outline"
   }
-  return base + ' ' + 'btn-success'
+  return base + " " + "btn-success"
 }
 
 const OrderItem: React.FC<OI> = (item) => {
-  const removeOrder = useOrderStore(state => state.removeOrder)
-  const updateOrder = useOrderStore(state => state.updateOrder)
-  const setUpdateTargetID = useOrderStore(state => state.setUpdateTargetID)
+  const removeOrder = useOrderStore((state) => state.removeOrder)
+  const updateOrder = useOrderStore((state) => state.updateOrder)
+  const setUpdateTargetID = useOrderStore((state) => state.setUpdateTargetID)
 
   const id = item.id.length === 12 ? Number(item.id.substring(8, 12)) : item.id
   const noodleTypeClass = getNoodleTypeClass(item.noodleType)
@@ -63,48 +69,48 @@ const OrderItem: React.FC<OI> = (item) => {
   const serveMealBtnClass = getServeMealBtnClass(item.completedAt)
 
   const handleUpdateNoodleStep = () => {
-    let newStatus: StepStatus = 'not-started'
+    let newStatus: StepStatus = "not-started"
     switch (item.progess.noodles) {
-      case 'not-started':
-        newStatus = 'completed'
+      case "not-started":
+        newStatus = "completed"
         break
       // case 'in-progress':
       //   newStatus = 'completed'
       //   break
-      case 'completed':
-        newStatus = 'not-started'
+      case "completed":
+        newStatus = "not-started"
         break
     }
     updateOrder(item.id, {
       ...item,
       progess: {
         ...item.progess,
-        noodles: newStatus
+        noodles: newStatus,
       },
-      completedAt: newStatus !== 'completed' ? '' : item.completedAt
+      completedAt: newStatus !== "completed" ? "" : item.completedAt,
     })
   }
 
   const handleUpdateMeatStep = () => {
-    let newStatus: StepStatus = 'not-started'
+    let newStatus: StepStatus = "not-started"
     switch (item.progess.meat) {
-      case 'not-started':
-        newStatus = 'completed'
+      case "not-started":
+        newStatus = "completed"
         break
-      // case 'in-progress':
-      //   newStatus = 'completed'
-      //   break
-      // case 'completed':
-        newStatus = 'not-started'
+        // case 'in-progress':
+        //   newStatus = 'completed'
+        //   break
+        // case 'completed':
+        newStatus = "not-started"
         break
     }
     updateOrder(item.id, {
       ...item,
       progess: {
         ...item.progess,
-        meat: newStatus
+        meat: newStatus,
       },
-      completedAt: newStatus !== 'completed' ? '' : item.completedAt
+      completedAt: newStatus !== "completed" ? "" : item.completedAt,
     })
   }
 
@@ -120,7 +126,7 @@ const OrderItem: React.FC<OI> = (item) => {
 
     updateOrder(item.id, {
       ...item,
-      completedAt: ''
+      completedAt: "",
     })
   }
 
@@ -128,38 +134,60 @@ const OrderItem: React.FC<OI> = (item) => {
     <>
       <div className="text-3xl opacity-80 tabular-nums text-center">{id}</div>
       <div className="list-col-grow flex flex-row">
-        {item.noodleType !== '无' && (
+        {item.noodleType !== "无" && (
           <div className={noodleTypeClass}>{item.noodleType}</div>
         )}
         <div className="text-3xl mr-2">{sizePrice}元</div>
         <div className="text-3xl">{item.dining.diningMethod}</div>
       </div>
       <div className="list-col-wrap text-2xl">
-        {meatReq !== '' && (
-          <div>{meatReq}</div>
-        )}
+        {meatReq !== "" && <div>{meatReq}</div>}
         <div>{req}</div>
         <div className="italic">{item.note}</div>
         <div className="flex flex-row my-2">
-          {item.progess.noodles != 'unrequired' && (
-            <button className={getStepBtnClass(item.progess.noodles)} onClick={handleUpdateNoodleStep} >粉</button>
+          {item.progess.noodles != "unrequired" && (
+            <button
+              className={getStepBtnClass(item.progess.noodles)}
+              onClick={handleUpdateNoodleStep}
+            >
+              粉
+            </button>
           )}
-          {item.progess.meat != 'unrequired' && (
-            <button className={getStepBtnClass(item.progess.meat)} onClick={handleUpdateMeatStep}>肉</button>
+          {item.progess.meat != "unrequired" && (
+            <button
+              className={getStepBtnClass(item.progess.meat)}
+              onClick={handleUpdateMeatStep}
+            >
+              肉
+            </button>
           )}
 
           <button
             className={serveMealBtnClass}
-            disabled={needsNoodlesStep(item) && item.progess.noodles !== 'completed' || needsMeatStep(item) && item.progess.meat !== 'completed'}
+            disabled={
+              (needsNoodlesStep(item) &&
+                item.progess.noodles !== "completed") ||
+              (needsMeatStep(item) && item.progess.meat !== "completed")
+            }
             onClick={handleServeMeal}
-          >出餐</button>
+          >
+            出餐
+          </button>
         </div>
-        <div className="text-base opacity-60">{dayjs(item.createdAt).toDate().toString()}</div>
+        <div className="text-base opacity-60">
+          {dayjs(item.createdAt).toDate().toString()}
+        </div>
       </div>
-      <button className="btn btn-square btn-primary" onClick={() => setUpdateTargetID(item.id)}>
+      <button
+        className="btn btn-square btn-primary"
+        onClick={() => setUpdateTargetID(item.id)}
+      >
         <CarbonEdit className="size-8" />
       </button>
-      <button className="btn btn-square btn-error" onClick={() => removeOrder(item.id)}>
+      <button
+        className="btn btn-square btn-error"
+        onClick={() => removeOrder(item.id)}
+      >
         <CarbonTrashCan className="size-8" />
       </button>
     </>
