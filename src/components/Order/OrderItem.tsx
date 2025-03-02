@@ -97,10 +97,10 @@ const OrderItem: React.FC<OI> = (item) => {
       case "not-started":
         newStatus = "completed"
         break
-        // case 'in-progress':
-        //   newStatus = 'completed'
-        //   break
-        // case 'completed':
+      // case 'in-progress':
+      //   newStatus = 'completed'
+      //   break
+      case "completed":
         newStatus = "not-started"
         break
     }
