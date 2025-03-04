@@ -52,6 +52,8 @@ jobs:
         with:
          gradle-version: wrapper
 
+      - run: ls /usr/local/lib/android/sdk/build-tools/
+
       - name: Build Android APK
         run: |
           cd android
