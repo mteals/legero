@@ -67,8 +67,13 @@ jobs:
         env:
           BUILD_TOOLS_VERSION: "35.0.0"
 
+      - name: Rename APK
+        run: |
+          cd android/app/build/outputs/apk/release
+          mv app-release-unsigned-signed.apk legero.apk
+
       - uses: actions/upload-artifact@v4
         with:
           name: legero
-          path: "android/app/build/outputs/apk/release/app-release.apk"
+          path: "android/app/build/outputs/apk/release/legero.apk"
       
