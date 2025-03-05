@@ -1,4 +1,5 @@
 import Home from "@/views/Home";
+import Login from "@/views/Login";
 import NotFound from "@/views/NotFound";
 import Order from "@/views/Order";
 import Settings from "@/views/Settings";
@@ -8,6 +9,10 @@ import { createBrowserRouter } from "react-router";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Login />
+  },
+  {
+    path: "/home",
     element: <Home />
   },
   {
