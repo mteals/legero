@@ -16,7 +16,7 @@ const Login: React.FC = () => {
     } = useUserStore()
 
     const NavToHome = () => {
-        navigate('/home', {
+        navigate('/', {
             replace: true
         })
     }

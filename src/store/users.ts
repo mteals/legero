@@ -15,6 +15,8 @@ interface UserState {
     error:ErrorForm ,
     isSubmitting: boolean,
     formType: 'login' | 'register',
+    isAuthenticated: boolean,
+    userToken: string | null
 
 
     setAccount: (account: string) => void
@@ -23,6 +25,8 @@ interface UserState {
     setFormType: (type: 'login' | 'register') => void
     validateForm: () => boolean
     resetForm: () => void
+    loginSuccess:(token:string)=>void
+    loginout:()=>void
 
     submitUserForm: () => Promise<boolean>
 }
@@ -36,6 +40,9 @@ export const useUserStore = create<UserState>()(
             error: {},
             isSubmitting: false,
             formType: 'login',
+            isAuthenticated:false,
+            userToken:null,
+
 
             setAccount: (account) => set({ account }),
             setPassword: (password) => set({ password }),
@@ -44,7 +51,6 @@ export const useUserStore = create<UserState>()(
                 set({ formType })
                 get().resetForm()
             },
-
             validateForm: () => {
                 const { account, password, repassword, formType } = get()
                 const newErrors: UserState['error'] = {}
@@ -69,13 +75,13 @@ export const useUserStore = create<UserState>()(
                 set({ error: newErrors })
                 return Object.keys(newErrors).length === 0
             },
-
             submitUserForm: async () => {
                 if (!get().validateForm()){
                     return false
                 }
                 set({ isSubmitting: true })
                 try {
+                    const mockToken = 'WIcDIZbrk1l2U1swwIWSsUaKaQXAadavFKFvjtCMi8sQovqgigPCptp5i3LFAhUk'
                     await new Promise(res => setTimeout(res, 1000))
                     const { account, password, formType } = get()
                     console.log(`提交${formType === "login" ? '登录' : '注册'}请求`,
@@ -84,6 +90,7 @@ export const useUserStore = create<UserState>()(
                             password
                         }
                     )
+                    get().loginSuccess(mockToken)
                     get().resetForm()
                     return true
                 } catch {
@@ -95,7 +102,19 @@ export const useUserStore = create<UserState>()(
                     set({ isSubmitting: false })
                 }
             },
-
+            loginSuccess:(token)=>set({
+                isAuthenticated:true,
+                userToken:token
+            }),
+            loginout:()=>set({
+                isAuthenticated:false,
+                userToken:null,
+                account: '',
+                password: '',
+                repassword: '',
+                error: {},
+                isSubmitting: false,
+            }),
             resetForm: () => set({
                 account: '',
                 password: '',
