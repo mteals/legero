@@ -21,12 +21,6 @@ const Login: React.FC = () => {
         })
     }
 
-    const NavToRegister = () => {
-        navigate('/register', {
-            replace: true
-        })
-
-    }
 
     useEffect(() => {
         useUserStore.getState().setFormType('login')
@@ -86,15 +80,6 @@ const Login: React.FC = () => {
                     >
                         {isSubmitting ? '登录中...' : '登录'}
                     </button>
-                </div>
-                <div className="text-center text-2xl text-gray-600 mt-4">
-                    没有账号？{' '}
-                    <span
-                        className="text-blue-600 hover:text-blue-800 font-medium text-2xl"
-                        onClick={NavToRegister}
-                    >
-                        立即注册
-                    </span>
                 </div>
             </form>
         </div>

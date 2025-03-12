@@ -2,7 +2,6 @@ import Home from "@/views/Home";
 import Login from "@/views/Login";
 import NotFound from "@/views/NotFound";
 import Order from "@/views/Order";
-import Register from "@/views/Register";
 import Settings from "@/views/Settings";
 import Statistic from "@/views/Statistics";
 import { createBrowserRouter } from "react-router";
@@ -12,10 +11,6 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <AuthRouter><Login /></AuthRouter>
-  },
-  {
-    path:'/register',
-    element:<AuthRouter><Register /></AuthRouter>
   },
   {
     path: "/",

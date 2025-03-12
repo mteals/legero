@@ -4,30 +4,26 @@ import { createJSONStorage, persist } from "zustand/middleware"
 interface ErrorForm { 
     account?: string, 
     password?: string, 
-    repassword?: string, 
     form?: string 
 }
 
 interface UserState {
     account: string,
     password: string,
-    repassword: string
     error:ErrorForm ,
     isSubmitting: boolean,
-    formType: 'login' | 'register',
-    isAuthenticated: boolean,
-    userToken: string | null
+    formType: 'login'
+    userToken: string | null,
+    isAuthenticated:boolean
 
 
     setAccount: (account: string) => void
     setPassword: (password: string) => void
-    setRePassword: (repassword: string) => void
-    setFormType: (type: 'login' | 'register') => void
+    setFormType: (type: 'login') => void
     validateForm: () => boolean
     resetForm: () => void
     loginSuccess:(token:string)=>void
     loginout:()=>void
-
     submitUserForm: () => Promise<boolean>
 }
 
@@ -36,7 +32,6 @@ export const useUserStore = create<UserState>()(
         (set, get) => ({
             account: '',
             password: '',
-            repassword: '',
             error: {},
             isSubmitting: false,
             formType: 'login',
@@ -46,13 +41,12 @@ export const useUserStore = create<UserState>()(
 
             setAccount: (account) => set({ account }),
             setPassword: (password) => set({ password }),
-            setRePassword: (repassword) => set({ repassword }),
             setFormType: (formType) => {
                 set({ formType })
                 get().resetForm()
             },
             validateForm: () => {
-                const { account, password, repassword, formType } = get()
+                const { account, password} = get()
                 const newErrors: UserState['error'] = {}
 
                 if (!account)
@@ -60,16 +54,6 @@ export const useUserStore = create<UserState>()(
 
                 if (!password) {
                     newErrors.password = '密码不能为空'
-                } else if (formType === 'register' && password.length < 6) {
-                    newErrors.password = '密码长度至少6位'
-                }
-
-                if (formType === 'register') {
-                    if (!repassword) {
-                        newErrors.repassword = '请再次输入密码'
-                    } else if (repassword !== password) {
-                        newErrors.repassword = '两次密码输入不一致'
-                    }
                 }
 
                 set({ error: newErrors })
@@ -83,8 +67,8 @@ export const useUserStore = create<UserState>()(
                 try {
                     const mockToken = 'WIcDIZbrk1l2U1swwIWSsUaKaQXAadavFKFvjtCMi8sQovqgigPCptp5i3LFAhUk'
                     await new Promise(res => setTimeout(res, 1000))
-                    const { account, password, formType } = get()
-                    console.log(`提交${formType === "login" ? '登录' : '注册'}请求`,
+                    const { account, password} = get()
+                    console.log(`提交登录请求`,
                         {
                             account,
                             password
@@ -111,14 +95,12 @@ export const useUserStore = create<UserState>()(
                 userToken:null,
                 account: '',
                 password: '',
-                repassword: '',
                 error: {},
                 isSubmitting: false,
             }),
             resetForm: () => set({
                 account: '',
                 password: '',
-                repassword: '',
                 error: {},
                 isSubmitting: false,
             })
