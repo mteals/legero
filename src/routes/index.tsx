@@ -1,11 +1,11 @@
 import Home from "@/views/Home";
-import Login from "@/views/Login";
+// import Login from "@/views/Login";
 import NotFound from "@/views/NotFound";
 import Order from "@/views/Order";
 import Settings from "@/views/Settings";
 import Statistic from "@/views/Statistics";
 import { createBrowserRouter } from "react-router";
-import { AuthRouter, ProtectedRouter } from "./Routes";
+// import { AuthRouter, ProtectedRouter } from "./Routes";
 
 const router = createBrowserRouter([
   // {
