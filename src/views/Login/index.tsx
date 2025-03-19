@@ -44,7 +44,7 @@ const Login: React.FC = () => {
                             type="text"
                             disabled={isSubmitting}
                             placeholder="请输入账号"
-                            className="w-full h-16 px-6 text-2xl rounded-md border-2 border-gray-300 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                            className="input input-bordered w-full input-lg !text-black"
                         />
                         {error.account && (
                             <span className="text-red-500 text-xl mt-1 block">{error.account}</span>
@@ -59,7 +59,7 @@ const Login: React.FC = () => {
                             type="password"
                             disabled={isSubmitting}
                             placeholder="请输入密码"
-                            className="w-full h-16 px-6 text-2xl rounded-md border-2 border-gray-300 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                            className="input input-bordered w-full input-lg !text-black"
                         />
                         {error.password && (
                             <span className="text-red-500 text-xl mt-1 block">{error.password}</span>
