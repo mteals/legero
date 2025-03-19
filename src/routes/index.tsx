@@ -8,25 +8,29 @@ import { createBrowserRouter } from "react-router";
 import { AuthRouter, ProtectedRouter } from "./Routes";
 
 const router = createBrowserRouter([
-  {
-    path: "/login",
-    element: <AuthRouter><Login /></AuthRouter>
-  },
+  // {
+  //   path: "/login",
+  //   element: <AuthRouter><Login /></AuthRouter>
+  // },
   {
     path: "/",
-    element: <ProtectedRouter><Home /></ProtectedRouter>
+    // element: <ProtectedRouter><Home /></ProtectedRouter>
+    element: <Home />
   },
   {
     path: "/order",
-    element: <ProtectedRouter><Order /></ProtectedRouter>
+    // element: <ProtectedRouter><Order /></ProtectedRouter>
+    element: <Order />
   },
   {
     path: "/statistics",
-    element: <ProtectedRouter><Statistic /></ProtectedRouter>
+    // element: <ProtectedRouter><Statistic /></ProtectedRouter>
+    element: <Statistic />
   },
   {
     path: "/settings",
-    element: <ProtectedRouter><Settings /></ProtectedRouter>
+    // element: <ProtectedRouter><Settings /></ProtectedRouter>
+    element: <Settings />
   },
   {
     path: "*",
