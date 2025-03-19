@@ -1,5 +1,4 @@
 import Home from "@/views/Home";
-import Login from "@/views/Login";
 // import Login from "@/views/Login";
 import NotFound from "@/views/NotFound";
 import Order from "@/views/Order";
@@ -13,10 +12,6 @@ const router = createBrowserRouter([
   //   path: "/login",
   //   element: <AuthRouter><Login /></AuthRouter>
   // },
-    {
-    path: "/login",
-    element: <Login />
-  },
   {
     path: "/",
     // element: <ProtectedRouter><Home /></ProtectedRouter>
