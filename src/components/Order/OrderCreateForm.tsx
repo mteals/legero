@@ -16,11 +16,13 @@ const OrderCreateForm: React.FC = () => {
   const genID = useOrderStore((state) => state.genID);
   const addOrder = useOrderStore((state) => state.addOrder);
 
+  const [num, setNum] = useState<number>(1)
   const [item, setItem] = useState<OrderItem>(newDefaultOrderItem());
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const handleDialogClose = () => {
+    setNum(1);
     setItem(newDefaultOrderItem());
   };
 
@@ -165,16 +167,13 @@ const OrderCreateForm: React.FC = () => {
 
   const handleCreateOrder = () => {
     const now = dayjs().tz();
-    const id = genID();
     const price = calcPrice(item);
 
     const newItem = {
       ...item,
-      id: id,
       price: price,
       createdAt: now.toISOString(),
     };
-    setItem(newItem);
 
     if (newItem.size === "小" && item.meats.available.includes("猪腰")) {
       newItem.meats.available = newItem.meats.available.filter(
@@ -198,7 +197,14 @@ const OrderCreateForm: React.FC = () => {
       newItem.customSizePrice = 0;
     }
 
-    addOrder(newItem);
+    for (let i = 0; i < num; i++) {
+      const id = genID()
+      const saveItem = {
+        ...newItem,
+        id: id,
+      }
+      addOrder(saveItem);
+    }
     closeDialog();
   };
 
@@ -219,6 +225,23 @@ const OrderCreateForm: React.FC = () => {
             <legend className="fieldset-legend text-2xl font-bold mb-2">
               创建订单
             </legend>
+
+            <label className="fieldset-label text-xl">
+              <span className="mr-2">数量</span>
+              <button
+                className="btn text-2xl"
+                onClick={() => {
+                  setNum(Math.max(num - 1, 1))
+                }}
+              >-</button>
+              <span className="mx-2">{num}</span>
+              <button
+                className="btn text-2xl"
+                onClick={() => {
+                  setNum(num + 1)
+                }}
+              >+</button>
+            </label>
 
             <div className="flex flex-row">
               <label className="fieldset-label text-xl mr-4">
@@ -298,8 +321,8 @@ const OrderCreateForm: React.FC = () => {
                     ? "小"
                     : (item.includeNoodles && item.noodleType === "河粉") ||
                       item.noodleType === "米粉"
-                    ? "10"
-                    : "11"}
+                      ? "10"
+                      : "11"}
                 </button>
                 <button
                   className={
@@ -314,8 +337,8 @@ const OrderCreateForm: React.FC = () => {
                     ? "中"
                     : (item.includeNoodles && item.noodleType === "河粉") ||
                       item.noodleType === "米粉"
-                    ? "12"
-                    : "13"}
+                      ? "12"
+                      : "13"}
                 </button>
                 <button
                   className={
@@ -330,8 +353,8 @@ const OrderCreateForm: React.FC = () => {
                     ? "大"
                     : (item.includeNoodles && item.noodleType === "河粉") ||
                       item.noodleType === "米粉"
-                    ? "15"
-                    : "16"}
+                      ? "15"
+                      : "16"}
                 </button>
                 <button
                   className={
