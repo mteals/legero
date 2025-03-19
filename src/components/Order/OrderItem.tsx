@@ -5,7 +5,7 @@ import {
   OrderItem as OI,
   StepStatus,
 } from "@/types"
-import React from "react"
+import React, { useRef } from "react"
 import { CarbonEdit, CarbonTrashCan } from "@/components/Icon"
 import { getMeatsRequest, getOtherRequest, getSizePrice } from "@/logic/order"
 import { useOrderStore } from "@/store/order"
@@ -60,6 +60,8 @@ const OrderItem: React.FC<OI> = (item) => {
   const removeOrder = useOrderStore((state) => state.removeOrder)
   const updateOrder = useOrderStore((state) => state.updateOrder)
   const setUpdateTargetID = useOrderStore((state) => state.setUpdateTargetID)
+
+  const dialogRef = useRef<HTMLDialogElement>(null)
 
   const id = item.id.length === 12 ? Number(item.id.substring(8, 12)) : item.id
   const noodleTypeClass = getNoodleTypeClass(item.noodleType)
@@ -130,6 +132,12 @@ const OrderItem: React.FC<OI> = (item) => {
     })
   }
 
+  const openDeleteDialog = () => {
+    if (dialogRef.current) {
+      dialogRef.current.showModal()
+    }
+  }
+
   return (
     <>
       <div className="text-3xl opacity-80 tabular-nums text-center">{id}</div>
@@ -186,10 +194,27 @@ const OrderItem: React.FC<OI> = (item) => {
       </button>
       <button
         className="btn btn-square btn-error"
-        onClick={() => removeOrder(item.id)}
+        onClick={() => openDeleteDialog()}
       >
         <CarbonTrashCan className="size-8" />
       </button>
+      <dialog ref={dialogRef} className="modal">
+        <div className="modal-box">
+          <div className="text-2xl">确认删除该订单？</div>
+          <div className="modal-action">
+            <button
+              className="btn btn-xl btn-error"
+              onClick={() => removeOrder(item.id)}
+            >确认</button>
+            <form method="dialog">
+              <button className="btn btn-xl">取消</button>
+            </form>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>Cancel</button>
+        </form>
+      </dialog>
     </>
   )
 }
