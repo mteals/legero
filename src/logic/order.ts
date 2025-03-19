@@ -4,7 +4,7 @@ export const newDefaultOrderItem = (): OrderItem => {
   return {
     id: "",
     includeNoodles: true,
-    noodleType: '无',
+    noodleType: '河粉',
     size: '小',
     customSizePrice: 0,
     noodleAmount: '正常',
