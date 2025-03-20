@@ -26,7 +26,7 @@ const Settings: React.FC = () => {
       <div className="mt-20 pt-2 flex flex-col items-center justify-center gap-y-6">
         <div>设置</div>
         <button className="btn btn-error" onClick={clear}>清空</button>
-        <button className="btn btn-secondary btn-md text-white hover:bg-red-700"
+        <button className="btn btn-secondary btn-md text-white"
          onClick={loginout}>退出登录</button>
       </div>
     </div>
