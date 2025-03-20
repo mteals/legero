@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { CarbonAdd } from "../Icon";
+import React, { useRef, useState } from "react"
+import { CarbonAdd } from "../Icon"
 import {
   Adjustment,
   DiningMethod,
@@ -7,36 +7,36 @@ import {
   OrderItem,
   Packaging,
   PackagingMethod,
-} from "@/types";
-import { calcPrice, newDefaultOrderItem } from "@/logic/order";
-import { useOrderStore } from "@/store/order";
-import dayjs from "dayjs";
+} from "@/types"
+import { calcPrice, newDefaultOrderItem } from "@/logic/order"
+import { useOrderStore } from "@/store/order"
+import dayjs from "dayjs"
 
 const OrderCreateForm: React.FC = () => {
-  const genID = useOrderStore((state) => state.genID);
-  const addOrder = useOrderStore((state) => state.addOrder);
+  const genID = useOrderStore((state) => state.genID)
+  const addOrder = useOrderStore((state) => state.addOrder)
 
   const [num, setNum] = useState<number>(1)
-  const [item, setItem] = useState<OrderItem>(newDefaultOrderItem());
+  const [item, setItem] = useState<OrderItem>(newDefaultOrderItem())
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null)
 
   const handleDialogClose = () => {
-    setNum(1);
-    setItem(newDefaultOrderItem());
-  };
+    setNum(1)
+    setItem(newDefaultOrderItem())
+  }
 
   const openDialog = () => {
     if (dialogRef.current) {
-      dialogRef.current.showModal();
+      dialogRef.current.showModal()
     }
-  };
+  }
 
   const closeDialog = () => {
     if (dialogRef.current) {
-      dialogRef.current.close();
+      dialogRef.current.close()
     }
-  };
+  }
 
   const handleIncludeNoodlesChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -44,8 +44,8 @@ const OrderCreateForm: React.FC = () => {
     setItem({
       ...item,
       includeNoodles: event.target.checked,
-    });
-  };
+    })
+  }
 
   const handleCustomSizePriceChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -53,8 +53,8 @@ const OrderCreateForm: React.FC = () => {
     setItem({
       ...item,
       customSizePrice: Number(event.target.value),
-    });
-  };
+    })
+  }
 
   const handleNoodleAmountChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -62,12 +62,12 @@ const OrderCreateForm: React.FC = () => {
     setItem({
       ...item,
       noodleAmount: event.target.value as Adjustment,
-    });
-  };
+    })
+  }
 
   const handleMeatsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const meat = event.target.value as MeatType;
-    const checked = event.target.checked;
+    const meat = event.target.value as MeatType
+    const checked = event.target.checked
 
     if (checked) {
       setItem({
@@ -76,7 +76,7 @@ const OrderCreateForm: React.FC = () => {
           available: [...item.meats.available, meat],
           excluded: item.meats.excluded.filter((m) => m !== meat),
         },
-      });
+      })
     } else {
       setItem({
         ...item,
@@ -84,9 +84,9 @@ const OrderCreateForm: React.FC = () => {
           available: item.meats.available.filter((m) => m !== meat),
           excluded: [...item.meats.excluded, meat],
         },
-      });
+      })
     }
-  };
+  }
 
   const handleGreensChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setItem({
@@ -95,8 +95,8 @@ const OrderCreateForm: React.FC = () => {
         ...item.ingredients,
         greens: event.target.value as Adjustment,
       },
-    });
-  };
+    })
+  }
 
   const handleScallionChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -107,8 +107,8 @@ const OrderCreateForm: React.FC = () => {
         ...item.ingredients,
         scallion: event.target.value as Adjustment,
       },
-    });
-  };
+    })
+  }
 
   const handlePepperChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setItem({
@@ -117,13 +117,13 @@ const OrderCreateForm: React.FC = () => {
         ...item.ingredients,
         pepper: event.target.value as Adjustment,
       },
-    });
-  };
+    })
+  }
 
   const handleDiningMethodChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const diningMethod = event.target.value as DiningMethod;
+    const diningMethod = event.target.value as DiningMethod
     setItem({
       ...item,
       dining: {
@@ -131,70 +131,70 @@ const OrderCreateForm: React.FC = () => {
         packaging: diningMethod === "外带" ? "塑料盒" : "无",
         packagingMethod: diningMethod === "外带" ? "装在一起" : "无",
       },
-    });
-  };
+    })
+  }
 
   const handlePackingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const packaging = event.target.value as Packaging;
+    const packaging = event.target.value as Packaging
     setItem({
       ...item,
       dining: {
         ...item.dining,
         packaging: packaging,
       },
-    });
-  };
+    })
+  }
 
   const handlePackingMethodChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const packagingMethod = event.target.value as PackagingMethod;
+    const packagingMethod = event.target.value as PackagingMethod
     setItem({
       ...item,
       dining: {
         ...item.dining,
         packagingMethod: packagingMethod,
       },
-    });
-  };
+    })
+  }
 
   const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setItem({
       ...item,
       note: event.target.value,
-    });
-  };
+    })
+  }
 
   const handleCreateOrder = () => {
-    const now = dayjs().tz();
-    const price = calcPrice(item);
+    const now = dayjs().tz()
+    const price = calcPrice(item)
 
     const newItem = {
       ...item,
       price: price,
       createdAt: now.toISOString(),
-    };
+    }
 
     if (newItem.size === "小" && item.meats.available.includes("猪腰")) {
       newItem.meats.available = newItem.meats.available.filter(
         (meat) => meat !== "猪腰"
-      );
+      )
     }
     if (newItem.includeNoodles) {
-      newItem.progess.noodles = "not-started";
+      newItem.progess.noodles = "not-started"
     } else {
-      newItem.progess.noodles = "unrequired";
+      newItem.progess.noodles = "unrequired"
     }
     if (newItem.meats.available.length > 0) {
-      newItem.progess.meat = "not-started";
+      newItem.progess.meat = "not-started"
     } else {
-      newItem.progess.meat = "unrequired";
+      newItem.progess.meat = "unrequired"
     }
     if (!newItem.includeNoodles) {
-      newItem.noodleType = "无";
+      newItem.noodleType = "无"
     }
     if (newItem.size !== "自定义") {
-      newItem.customSizePrice = 0;
+      newItem.customSizePrice = 0
     }
 
     for (let i = 0; i < num; i++) {
@@ -203,10 +203,10 @@ const OrderCreateForm: React.FC = () => {
         ...newItem,
         id: id,
       }
-      addOrder(saveItem);
+      addOrder(saveItem)
     }
-    closeDialog();
-  };
+    closeDialog()
+  }
 
   return (
     <>
@@ -233,14 +233,18 @@ const OrderCreateForm: React.FC = () => {
                 onClick={() => {
                   setNum(Math.max(num - 1, 1))
                 }}
-              >-</button>
+              >
+                -
+              </button>
               <span className="mx-2">{num}</span>
               <button
                 className="btn text-2xl"
                 onClick={() => {
                   setNum(num + 1)
                 }}
-              >+</button>
+              >
+                +
+              </button>
             </label>
 
             <div className="flex flex-row">
@@ -255,20 +259,10 @@ const OrderCreateForm: React.FC = () => {
               </label>
               <div className="flex flex-row gap-3">
                 <button
-                  className="btn btn-square text-xl"
-                  hidden={item.noodleType === "无"}
-                  onClick={() => setItem({ ...item, noodleType: "无" })}
-                >
-                  ×
-                </button>
-                <button
                   className={
                     item.noodleType === "河粉"
                       ? "btn text-xl btn-primary"
                       : "btn text-xl"
-                  }
-                  hidden={
-                    item.noodleType !== "无" && item.noodleType !== "河粉"
                   }
                   onClick={() => setItem({ ...item, noodleType: "河粉" })}
                 >
@@ -280,9 +274,6 @@ const OrderCreateForm: React.FC = () => {
                       ? "btn text-xl btn-primary"
                       : "btn text-xl"
                   }
-                  hidden={
-                    item.noodleType !== "无" && item.noodleType !== "米粉"
-                  }
                   onClick={() => setItem({ ...item, noodleType: "米粉" })}
                 >
                   米粉
@@ -292,9 +283,6 @@ const OrderCreateForm: React.FC = () => {
                     item.noodleType === "伊面"
                       ? "btn text-xl btn-primary"
                       : "btn text-xl"
-                  }
-                  hidden={
-                    item.noodleType !== "无" && item.noodleType !== "伊面"
                   }
                   onClick={() => setItem({ ...item, noodleType: "伊面" })}
                 >
@@ -321,8 +309,8 @@ const OrderCreateForm: React.FC = () => {
                     ? "小"
                     : (item.includeNoodles && item.noodleType === "河粉") ||
                       item.noodleType === "米粉"
-                      ? "10"
-                      : "11"}
+                    ? "10"
+                    : "11"}
                 </button>
                 <button
                   className={
@@ -337,8 +325,8 @@ const OrderCreateForm: React.FC = () => {
                     ? "中"
                     : (item.includeNoodles && item.noodleType === "河粉") ||
                       item.noodleType === "米粉"
-                      ? "12"
-                      : "13"}
+                    ? "12"
+                    : "13"}
                 </button>
                 <button
                   className={
@@ -353,8 +341,8 @@ const OrderCreateForm: React.FC = () => {
                     ? "大"
                     : (item.includeNoodles && item.noodleType === "河粉") ||
                       item.noodleType === "米粉"
-                      ? "15"
-                      : "16"}
+                    ? "15"
+                    : "16"}
                 </button>
                 <button
                   className={
@@ -626,7 +614,7 @@ const OrderCreateForm: React.FC = () => {
         </form>
       </dialog>
     </>
-  );
-};
+  )
+}
 
-export default OrderCreateForm;
+export default OrderCreateForm

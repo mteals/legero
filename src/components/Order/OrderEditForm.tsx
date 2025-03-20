@@ -232,19 +232,11 @@ const OrderEditForm: React.FC = () => {
             </label>
             <div className="flex flex-row gap-3">
               <button
-                className="btn btn-square text-xl"
-                hidden={item.noodleType === "无"}
-                onClick={() => setItem({ ...item, noodleType: "无" })}
-              >
-                ×
-              </button>
-              <button
                 className={
                   item.noodleType === "河粉"
                     ? "btn text-xl btn-primary"
                     : "btn text-xl"
                 }
-                hidden={item.noodleType !== "无" && item.noodleType !== "河粉"}
                 onClick={() => setItem({ ...item, noodleType: "河粉" })}
               >
                 河粉
@@ -255,7 +247,6 @@ const OrderEditForm: React.FC = () => {
                     ? "btn text-xl btn-primary"
                     : "btn text-xl"
                 }
-                hidden={item.noodleType !== "无" && item.noodleType !== "米粉"}
                 onClick={() => setItem({ ...item, noodleType: "米粉" })}
               >
                 米粉
@@ -266,7 +257,6 @@ const OrderEditForm: React.FC = () => {
                     ? "btn text-xl btn-primary"
                     : "btn text-xl"
                 }
-                hidden={item.noodleType !== "无" && item.noodleType !== "伊面"}
                 onClick={() => setItem({ ...item, noodleType: "伊面" })}
               >
                 伊面
@@ -281,9 +271,7 @@ const OrderEditForm: React.FC = () => {
               {/* <button className="btn btn-square text-xl transition-all duration-700" hidden={item.size === '无'} onClick={() => setItem({ ...item, size: '无' })}>×</button> */}
               <button
                 className={
-                  item.size === "小"
-                    ? "btn text-xl btn-primary"
-                    : "btn text-xl"
+                  item.size === "小" ? "btn text-xl btn-primary" : "btn text-xl"
                 }
                 // hidden={item.size !== '无' && item.size !== '小'}
                 onClick={() => setItem({ ...item, size: "小" })}
@@ -297,9 +285,7 @@ const OrderEditForm: React.FC = () => {
               </button>
               <button
                 className={
-                  item.size === "中"
-                    ? "btn text-xl btn-primary"
-                    : "btn text-xl"
+                  item.size === "中" ? "btn text-xl btn-primary" : "btn text-xl"
                 }
                 // hidden={item.size !== '无' && item.size !== '中'}
                 onClick={() => setItem({ ...item, size: "中" })}
@@ -313,9 +299,7 @@ const OrderEditForm: React.FC = () => {
               </button>
               <button
                 className={
-                  item.size === "大"
-                    ? "btn text-xl btn-primary"
-                    : "btn text-xl"
+                  item.size === "大" ? "btn text-xl btn-primary" : "btn text-xl"
                 }
                 // hidden={item.size !== '无' && item.size !== '大'}
                 onClick={() => setItem({ ...item, size: "大" })}
